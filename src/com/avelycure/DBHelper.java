@@ -3,10 +3,10 @@ package com.avelycure;
 import java.util.Date;
 
 public class DBHelper {
-    public static final String DATABASE_URL = "jdbc:postgresql://localhost:5432/postgres";
-    public static final String JDBC_DRIVER = "org.postgresql.Driver";
-    public static final String USER = "postgres";
-    public static final String PASSWORD = "root";
+    public static final String DATABASE_URL = PersonalInformation.DATABASE_URL;
+    public static final String JDBC_DRIVER = PersonalInformation.JDBC_DRIVER;
+    public static final String USER = PersonalInformation.USER;
+    public static final String PASSWORD = PersonalInformation.PASSWORD;
 
     public static String createTable(String name) {
         return "";
