@@ -1,5 +1,4 @@
 package com.avelycure;
-
 import java.util.Date;
 
 public class DBHelper {
