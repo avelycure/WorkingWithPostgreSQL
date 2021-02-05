@@ -8,29 +8,71 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
-        //
+        //Initial parameters
         DBHelper dbHelper = new DBHelper();
         Class.forName(dbHelper.JDBC_DRIVER);
         connection = DriverManager.getConnection(dbHelper.DATABASE_URL, dbHelper.USER, dbHelper.PASSWORD);
         statement = connection.createStatement();
 
+        //Filling tables
         //fillBooksTable(dbHelper);
-        ResultSet resultSet1 = statement.executeQuery(dbHelper.selectAll("books"));
-        printBooksTable(resultSet1);
+        //ResultSet resultSet1 = statement.executeQuery(dbHelper.selectAll("books"));
+        //printBooksTable(resultSet1);
+        //resultSet1.close();
 
         //fillIssues(dbHelper);
-        ResultSet resultSet2 = statement.executeQuery(dbHelper.selectAll("issues"));
-        printIssuesTable(resultSet2);
+        //ResultSet resultSet2 = statement.executeQuery(dbHelper.selectAll("issues"));
+        //printIssuesTable(resultSet2);
+        //resultSet2.close();
 
         //fillReaders(dbHelper);
-        ResultSet resultSet3 = statement.executeQuery(dbHelper.selectAll("readers"));
-        printReadersTable(resultSet3);
+        //ResultSet resultSet3 = statement.executeQuery(dbHelper.selectAll("readers"));
+        //printReadersTable(resultSet3);
+        //resultSet3.close();
 
-        resultSet1.close();
-        resultSet2.close();
-        resultSet3.close();
+        //statement.executeUpdate(dbHelper.addColumnIdToIssues());
+        //ResultSet resultSet4 = statement.executeQuery(dbHelper.selectAll("issues"));
+        //printIssuesTable(resultSet4);
+        //resultSet4.close();
+
+        //statement.execute(dbHelper.createIntermediateTable());
+        //fillInterTable(dbHelper);
+        ResultSet resultSet5;// = statement.executeQuery("SELECT * FROM inter_table;");
+        //printInterTable(resultSet5);
+
+        //resultSet5 = statement.executeQuery(dbHelper.selectReadersAndTheirBooks());
+        //printSelectedBooksAndReadersTable(resultSet5);
+
+        //statement.execute(dbHelper.dropTable("inter_table"));
+
+        resultSet5 = statement.executeQuery(dbHelper.selectBooksAndIssues());
+        printSelectedBooksAndIssuesTable(resultSet5);
+
+
+        //Closing block
         connection.close();
         statement.close();
+    }
+
+    private static void printSelectedBooksAndIssuesTable(ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            System.out.println(resultSet.getString("book_name") + " " + resultSet.getDate("date")+ " " + resultSet.getDate("return_date"));
+        }
+    }
+
+    private static void printSelectedBooksAndReadersTable(ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            System.out.println(resultSet.getString("reader_name") + " " + resultSet.getString("book_name"));
+        }
+    }
+
+    private static void fillInterTable(DBHelper dbHelper) throws SQLException {
+        statement.executeUpdate(dbHelper.insertInIterTable(15, 100000));
+        statement.executeUpdate(dbHelper.insertInIterTable(16, 100000));
+        statement.executeUpdate(dbHelper.insertInIterTable(17, 100000));
+        statement.executeUpdate(dbHelper.insertInIterTable(18, 400000));
+        statement.executeUpdate(dbHelper.insertInIterTable(19, 700000));
+        statement.executeUpdate(dbHelper.insertInIterTable(19, 789955));
     }
 
     public void fillBooksTable(DBHelper dbHelper) throws SQLException {
@@ -74,7 +116,16 @@ public class Main {
     public static void printReadersTable(ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
             System.out.println(resultSet.getString("name") + " " + resultSet.getString("address") + " " +
-                    resultSet.getString("telephone") + " " + resultSet.getBoolean("active") +" "+ resultSet.getInt("passport_id"));
+                    resultSet.getString("telephone") + " " + resultSet.getBoolean("active") + " " + resultSet.getInt("passport_id"));
         }
     }
+
+    public static void printInterTable(ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            System.out.println(resultSet.getInt("book_id") + " " + resultSet.getInt("passport_id"));
+        }
+    }
+
+
+
 }
